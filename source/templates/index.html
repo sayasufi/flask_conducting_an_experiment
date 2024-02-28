@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flask App</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="../static/js/bootstrap.js"></script>
+    <script src="../static/js/bootstrap.bundle.js"></script>
+    <script src="../static/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/jquery/jquery-3.6.0.js"></script>
+</head>
+<body>
+<div class="container">
+    <form method="POST" action="/">
+        <label for="count">Введите число:</label>
+        <br>
+        <input type="number" id="count" name="count">
+        <br><br>
+        <button type="submit" name="start">Запустить</button>
+        <button type="submit" name="stop">Остановить</button>
+    </form>
+    <br><br>
+    <div class="progress" style="height: 23px; border: 2px solid black; position: relative;">
+        <div id="r3c1" class="progress-bar bg-info" role="progressbar" style="width: 0%">
+            <span id="progressText" style="position: absolute; left: 50%; transform: translateX(-50%);">0</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    setInterval(
+        function () {
+            $.getJSON('/get_form', {}, function (data) {
+                $("#r3c1").css({'width': data.result[0] * 100 / data.result[1] + '%'});
+                $("#progressText").text(data.result[0] + " / " + data.result[1]);
+            });
+        },
+        1000);
+</script>
+</body>
+</html>
