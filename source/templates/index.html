@@ -11,9 +11,15 @@
 <body>
 <div class="container">
     <form method="POST" action="/">
-        <label for="count">Введите число:</label>
+        <label for="timer">Введите длительность эксперимента:</label>
+        <br>
+        <input type="number" id="timer" name="timer">
+        <br>
+        <br>
+        <label for="count">Введите кол-во повторений:</label>
         <br>
         <input type="number" id="count" name="count">
+
         <br><br>
         <button type="submit" name="start">Запустить</button>
         <button type="submit" name="stop">Остановить</button>

@@ -1,31 +1,36 @@
 import time
+
 flag = True
 
 
-def start_external_function(count):
+def start_external_function(count, timer):
     global flag
     flag = True
     current = 0
-    with open("source/temp.txt", "w") as file:
-        file.write(f"{0} {0}")
     while current < count and flag:
-        do_something()
+        do_something(timer)
         # Увеличиваем значение переменной current
         current += 1
-        with open("source/temp.txt", "w") as file:
+        with open("temp.txt", "w") as file:
             file.write(f"{current} {count}")
+    if not flag:
+        with open("temp.txt", "w") as file:
+            file.write(f"{0} {0}")
 
 
-
-
-def do_something():
+def do_something(timer):
+    global flag
     print("Hello World!")
-    time.sleep(1)
+    start_time = time.time()
+    while flag:
+        if time.time() - start_time >= timer:
+            break
+        time.sleep(1)
 
 
 def stop_external_function():
     global flag
     flag = False
     print("Stopping")
-    with open("source/temp.txt", "w") as file:
+    with open("temp.txt", "w") as file:
         file.write(f"{0} {0}")

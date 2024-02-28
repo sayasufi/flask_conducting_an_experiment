@@ -7,17 +7,21 @@ from funcs.funcs import start_external_function, stop_external_function
 
 app = Flask(__name__)
 
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         if 'start' in request.form:
-            if request.form['count']:
+            stop_external_function()
+            with open("temp.txt", "w") as file:
+                file.write(f"{0} {0}")
+            if request.form['count'] and request.form['timer']:
                 # Получаем значение из поля ввода
                 count = int(request.form['count'])
+                timer = int(request.form['timer'])
                 # Запускаем внешнюю функцию
-                stop_external_function()
                 time.sleep(2)
-                my_thread = threading.Thread(target=start_external_function, args=(count,), daemon=True)
+                my_thread = threading.Thread(target=start_external_function, args=(count, timer), daemon=True)
                 my_thread.start()
 
         elif 'stop' in request.form:
@@ -41,7 +45,7 @@ def stop():
 
 @app.route('/get_form')
 def get_form():
-    with open('source/temp.txt', "r") as file:
+    with open('temp.txt', "r") as file:
         data = list(map(int, file.read().strip().split()))
 
     return jsonify(result=data)
